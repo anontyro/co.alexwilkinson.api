@@ -1,0 +1,42 @@
+name: Production build for API
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Build Docker image
+        run: docker build -t api -f docker/api/Dockerfile .
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Tag Docker image with SHA
+        run: docker tag api "${{ secrets.DOCKER_USERNAME }}/alexwilkinson-api:${{ github.sha }}"
+
+      - name: Push Docker image with SHA
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/alexwilkinson-api:${{ github.sha }}"
+
+      - name: Tag Docker image with latest
+        run: docker tag api "${{ secrets.DOCKER_USERNAME }}/alexwilkinson-api:latest"
+
+      - name: Push Docker image with latest
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/alexwilkinson-api:latest"
