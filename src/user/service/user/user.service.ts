@@ -2,6 +2,7 @@ import { AuthUser } from '@supabase/supabase-js';
 import { Injectable } from '@nestjs/common';
 import { SupabaseDatabaseService } from 'src/database/service/logic/supabase/supabase-database.service';
 import { UserResponseDto } from 'src/user/models/dtos/user-response.dto';
+import { UserUpdateDto } from 'src/user/models/dtos/user-update.dto';
 
 @Injectable()
 export class UserService {
@@ -19,5 +20,14 @@ export class UserService {
     } catch (err) {
       return baseUser;
     }
+  }
+
+  async updateUserDetails(email: string, userUpdate: UserUpdateDto) {
+    const updated = await this.dbService.userDb.updateUserDetails(
+      email,
+      userUpdate,
+    );
+
+    return updated;
   }
 }
