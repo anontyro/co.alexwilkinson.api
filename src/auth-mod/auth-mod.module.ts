@@ -4,14 +4,14 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { SupabaseAuthGuard } from './guards/supabase-auth-guard';
-import { SupabaseService } from './service/logic/supabase/supabase.service';
+import { SupabaseAuthService } from './service/logic/supabase/supabase-auth.service';
 import { SupabaseStrategy } from './strategies/supabase.strategy';
 
 @Module({
   imports: [PassportModule],
   providers: [
     AuthService,
-    SupabaseService,
+    SupabaseAuthService,
     SupabaseStrategy,
     RefreshTokenGuard,
     SupabaseAuthGuard,

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { SignUpUserDto } from 'src/auth-mod/models/signUpUser.dto';
-import { SupabaseService } from '../logic/supabase/supabase.service';
+import { SupabaseAuthService } from '../logic/supabase/supabase-auth.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly supabaseService: SupabaseService) {}
+  constructor(private readonly supabaseService: SupabaseAuthService) {}
 
   public redirectUrl = '';
 

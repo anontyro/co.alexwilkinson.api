@@ -4,17 +4,16 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
+
+import { SupabaseClient } from '@supabase/supabase-js';
+import { makeClient } from 'src/common/supabase/makeClient';
 
 @Injectable()
 export class RefreshTokenGuard implements CanActivate {
   private supabase: SupabaseClient;
 
   constructor() {
-    const superbaseUrl = process.env.SUPABASE_URL ?? '';
-    const superbaseApiKey = process.env.SUPABASE_PUB_API_KEY ?? '';
-
-    this.supabase = createClient(superbaseUrl, superbaseApiKey);
+    this.supabase = makeClient();
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

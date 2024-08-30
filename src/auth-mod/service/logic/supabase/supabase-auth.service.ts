@@ -1,16 +1,13 @@
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
-
 import { Injectable } from '@nestjs/common';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { makeClient } from 'src/common/supabase/makeClient';
 
 @Injectable()
-export class SupabaseService {
+export class SupabaseAuthService {
   private supabase: SupabaseClient;
 
   constructor() {
-    const superbaseUrl = process.env.SUPABASE_URL ?? '';
-    const superbaseApiKey = process.env.SUPABASE_PUB_API_KEY ?? '';
-
-    this.supabase = createClient(superbaseUrl, superbaseApiKey);
+    this.supabase = makeClient();
   }
 
   async signUp(email: string, password: string) {
