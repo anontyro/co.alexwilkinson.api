@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
+import { GoogleIntegrationsModule } from './google-integrations/google-integrations.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DatabaseModule } from './database/database.module';
     AuthModModule,
     UserModule,
     DatabaseModule,
+    GoogleIntegrationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
