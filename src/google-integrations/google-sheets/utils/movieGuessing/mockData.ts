@@ -1,4 +1,6 @@
-export const movieSheetReturnValue = {
+import { GoogleSheetObject } from '../../types/GoogleSheetObject';
+
+export const movieSheetReturnValue: GoogleSheetObject = {
   range: 'Sheet1!A1:AA1169',
   majorDimension: 'ROWS',
   values: [

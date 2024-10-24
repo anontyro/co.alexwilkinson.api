@@ -1,12 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { GoogleSheetObject } from '../../../types/GoogleSheetObject';
+import { Movie } from 'src/google-integrations/google-sheets/entities/movie.entity';
+import { mapSheetToEntity } from 'src/google-integrations/google-sheets/utils/movieGuessing/mapSheetToEntity';
 
 const GOOGLE_SHEET_URL = `https://sheets.googleapis.com/v4/spreadsheets`;
-
-type GoogleSheetObject = {
-  majorDimension: 'ROWS';
-  range: string;
-  values: string[];
-};
 
 @Injectable()
 export class MovieGuessingService {
@@ -30,7 +32,7 @@ export class MovieGuessingService {
     }
   }
 
-  async getMovieSheetData(apiKey: string): Promise<any> {
+  async getMovieSheetData(apiKey: string): Promise<Movie[]> {
     if (!apiKey || !this.SheetId) {
       throw new NotFoundException(
         'Unable to find keys required for request of Google Sheet Movie',
@@ -39,6 +41,12 @@ export class MovieGuessingService {
 
     const sheetData = await this.getMovieSheet(apiKey);
 
-    return sheetData;
+    if (!sheetData) {
+      throw new BadRequestException('Unable to get sheet data');
+    }
+
+    const processedEntities = mapSheetToEntity(sheetData);
+
+    return processedEntities;
   }
 }
